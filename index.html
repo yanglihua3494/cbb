@@ -44,36 +44,37 @@
 
 <body>
     <div class="content">
-        <h2>蓓蓓~祝你获得一天的好运</h2>
-        <div class="timer">
-            <b id="d"></b> Days <b id="h"></b> Hours <b id="m"></b> Minutes <b id="s"></b> Seconds
-        </div>
+        <h2>蓓蓓~祝你获得一天的好运，你可以试试这个时间</h2>
+        <div id="luckyTime"></div>
     </div>
 
     <script>
-        function timer() {
-            var start = new Date(2018, 7, 2);
-            var t = new Date() - start;
-            var h = ~~(t / 1000 / 60 / 60 % 24);
-            if (h < 10) {
-                h = "0" + h;
-            }
-            var m = ~~(t / 1000 / 60 % 60);
-            if (m < 10) {
-                m = "0" + m;
-            }
+        function getRandomLuckyTime() {
+            // 定义时间范围（早上8点到晚上12点）
+            const startTime = new Date();
+            startTime.setHours(8, 0, 0, 0); // 设置为早上8点整
 
-            var s = ~~(t / 1000 % 60);
-            if (s < 10) {
-                s = "0" + s;
-            }
-            document.getElementById('d').innerHTML = ~~(t / 1000 / 60 / 60 / 24);
-            document.getElementById('h').innerHTML = h;
-            document.getElementById('m').innerHTML = m;
-            document.getElementById('s').innerHTML = s;
+            const endTime = new Date();
+            endTime.setHours(23, 59, 59, 999); // 设置为晚上11点59分59秒999毫秒
+
+            // 计算时间差（以毫秒为单位）
+            const timeDiff = endTime - startTime;
+
+            // 生成一个随机数，用于确定在时间范围内的具体时间点
+            const randomMilliSeconds = Math.floor(Math.random() * timeDiff);
+
+            // 创建一个新的日期对象，表示随机选择的时间点
+            const luckyTime = new Date(startTime.getTime() + randomMilliSeconds);
+
+            // 格式化输出，只保留时和分
+            const hours = String(luckyTime.getHours()).padStart(2, '0');
+            const minutes = String(luckyTime.getMinutes()).padStart(2, '0');
+
+            return `${hours}:${minutes}`;
         }
-        timer();
-        setInterval(timer, 1000);
+
+        // 更新页面上的幸运时间
+        document.getElementById('luckyTime').innerHTML = getRandomLuckyTime();
     </script>
 </body>
 
